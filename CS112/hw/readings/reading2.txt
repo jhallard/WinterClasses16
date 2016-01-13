@@ -1,0 +1,59 @@
+John Allard
+ID: 1437547
+January 11th, 2016
+
+Reading #2 - The 'Types and Typeclasses' and 'Syntax in Function' chapter in 'Learn you a Haskell', and the 'Facts, Riles and Queries' section from 'Learn Prolog Now!'.
+
+Types and Typeclasses
+This chapter from the Haskell book concentrated on an introduction to the wonderfully rich type system of Haskell. We learn that you can find the type of any expression in Haskell with the `:t` operator. We then learned about function types, what they are, and how to declare them. This is done with the followng syntax :
+
+foo :: t0 -> t1 -> /* ... */ -> tn -> x
+
+Where the t's are your function parameter types and x is the output type, foo being the function name.
+After this each of the built in types are discussed, like Int, Float, Bool, etc. Then type variables, or what C++ people think of as templating, is discussed. Functions that have type variables are called polymorphic functions in Haskell.
+Next, we get a short itnro to typeclasses, which are described as "like Java interfaces, only better". We then go over some basic type classes like Eq, Ord, Show, and Read.
+
+
+Syntax in Functions
+This chapter starts off with pattern matching. This is explained as "specifying patterns to which some data should conform and then checking to see if it does and deconstructing the data according to those patterns". The topic is then introduced with an example, which shows how to define a function that changes it's output in a 1 to 1 correspondence with the input. A great example of this is the factorial definition :
+
+factorial :: (Integral a) => a -> a  
+factorial 0 = 1  
+factorial n = n * factorial (n - 1)  
+
+Here we define it recursively using the last expression and supply the base-case in the second expression. This is very concise, almost pythonic in a way. After this the errors that can occur with pattern matching are explained, like supplying an undefined input. After this pattern matching regarding lists and functions that operate on lists are discussed.
+
+Next, the awesome Haskell guards are discussed. Guards are a way of testing if different values are T/F, kind of like syntactic sugar for if/else or case statements, but much more elegant in my opinion. Gaurds are represented by a descending column of pipes ('|'), with clauses the to the right of each one. If the input matches the clause, the following statement is executed.
+Next we learned that you can put Where clauses after the guards to qualify the variable being tested by the guards. This allows an input transformation before validating against our clauses. We finish up with the 'let' and 'in' framework present in Haskell. They follow this format :
+
+let <bindings> in <expression>
+
+This gives convenient, once again 'pythonic' syntax for list comprehensions. An example is  :
+
+ [let square x = x * x in (square 5, square 3, square 2)]  
+
+Facts, Riles, and Queries :
+This was my first ever encounter with the Prolog language. We start with the knowledge that there are 'only 3 basic constructs in Prolog: facts, rules, and queries'. This presents an interesting an unique paradigm for a programming language. Prolog programs revole around writing knowledge bases, which is defined as a collection of facts and rules. We then use the prolog program by posting queries against it.
+
+We start with an example of how to state facts in prolog. This is done in the amazingly simply syntax of :
+
+trait(examplar)
+
+So for example, isTyping(John) would describe the fact that I'm typing this document right now. I could then query :
+
+?- isTyping(John)
+
+And I would recieve 'yes' as an answer. By default, if you make a query against an unkown trait or examplar then you get returned 'no'. This makes sense and is convenient in that you never have to 'check for null-pointers', aka worry about undefined values. 
+Next we go over classes and how to subclass traits. This could be
+
+isTyping(John):-
+  isTired(John),
+  drinksBeer(John).
+
+This described my state more completely, and in this case defines a rule. The rules ays that if I am typing, then I am tired and I drink beer. There is a level of implication here not present in simple facts, as rules are compostions of facts.
+Next we go over variables, and how you can stuff like 'X = john', then use this to submit queries. Then we learn how to define rules and facts using variables, like :
+
+ jealous(X,Y):-  loves(X,Z),  loves(Y,Z).
+
+This is powerful and generic programming at it's finest.
+
