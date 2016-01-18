@@ -6,6 +6,8 @@
 
 import Data.Char
 import Data.List
+import Text.Regex
+import Text.Regex.Posix
 
 -- | 1.) Write a function that turns a first and last name into "$last, $first"
 citeAuthor :: String -> String -> String
@@ -32,5 +34,20 @@ bibliography_rec (x:y) = citeBook x ++ "\n" ++ bibliography_rec y
 -- | 6.) Write a function that returns the average publication year from a list of books
 averageYear :: [(String, String, Int)] -> Int
 averageYear x = sum (map (\(x, y, z) -> z) x) `div`  genericLength x
+
+-- | 7.) Take the definition of txt given below and write a function 'references'
+--       which takes a text with references in the format [n] and returns the total
+--       number of references.
+txt :: String
+txt = "[1] and [2] both feature characters who will do whatever it takes to " ++
+      "get to their goal, and in the end the thing they want the most ends " ++
+      "up destroying them.  In case of [2] this is a whale..."
+references :: String -> Int
+references txt = genericLength (filter (=~"\\[([1-9]+)]") (words txt))
+
+-- | 8.) Write a function citeText which takes a list of books and a text with references
+--       in the form [n] and returns a tet with all references replaces by a citation of the
+--       nth book using the citeBook function from problem 5
+-- citeText :: [(String, String, Int)] -> String -> String
 
 
