@@ -2,6 +2,8 @@
 -- | Date   : Jan 15th 2016
 -- | Class  : CMPS 112 UCSC
 
+-- | I worked alone, no partners to list.
+
 -- | Homework #1 |--
 
 import Data.Char
@@ -32,6 +34,8 @@ bibliography_rec [] = ""
 bibliography_rec (x:y) = citeBook x ++ "\n" ++ bibliography_rec y 
     
 -- | 6.) Write a function that returns the average publication year from a list of books
+--       ** note ** - this seems like it should return a float or fractional but the assignment
+--       required an int so that's what I'm doing
 averageYear :: [(String, String, Int)] -> Int
 averageYear x = sum (map (\(x, y, z) -> z) x) `div`  genericLength x
 
@@ -43,11 +47,17 @@ txt = "[1] and [2] both feature characters who will do whatever it takes to " ++
       "get to their goal, and in the end the thing they want the most ends " ++
       "up destroying them.  In case of [2] this is a whale..."
 references :: String -> Int
-references txt = genericLength (filter (=~"\\[([1-9]+)]") (words txt))
+references intxt = genericLength (filter (=~"\\[([1-9]+)]") (words intxt))
 
 -- | 8.) Write a function citeText which takes a list of books and a text with references
 --       in the form [n] and returns a tet with all references replaces by a citation of the
 --       nth book using the citeBook function from problem 5
--- citeText :: [(String, String, Int)] -> String -> String
+
+-- take a "[index_str]" and return cites[index_str]
+citeTextHelper :: [(String, String, Int)] -> String -> String
+citeTextHelper cites index_str = citeBook (cites !! (index_str =~ "([0-9]+)"))
+
+citeText :: [(String, String, Int)] -> String -> String
+citeText cites str = intercalate " " (map (\x -> if (x =~"\\[([1-9]+)]") then citeTextHelper cites x else x) (words str))
 
 
