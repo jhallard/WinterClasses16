@@ -37,4 +37,32 @@ myFoldr op acc xs = foldl (\a b c -> a (op b c)) id xs acc
 myFoldl2 :: (a -> b -> a) -> a -> [b] -> a
 myFoldl2 op acc xs = foldr (\a b c -> b (op c a)) id xs acc
 
+-- | 5.) Write a function isUpper which returns true if the provided character 
+--       is in the range 'A' to 'Z'.
+isUpper1 :: Char -> Bool
+isUpper1 x = x `elem` ['A'..'Z'] 
 
+-- | 7.) Using the standard filter, write a function onlyCapitals1 which returns only 
+--       the capital letters of the provided string
+onlyCapitals1 :: String -> String
+onlyCapitals1 str = filter (isUpper) str
+
+
+-- | 7.)
+onlyCapitals2 :: String -> String
+onlyCapitals2 str = ""
+
+-- | 8.)
+onlyCapitals3 :: String -> String
+onlyCapitals3 str = ""
+
+-- | 9.)
+divRemainder :: Int -> Int -> (Int, Int)
+divRemainder x y = (0,0)
+ 
+-- | 10.)
+digitSum :: Int -> Int
+digitSum x = 1
+ 
+-- | 11.)
+--
