@@ -1,0 +1,25 @@
+John Allard
+
+CMPS 112
+
+Reading #3
+
+
+
+Recursion -
+
+Recursion is a very powerful programming functionality and it plays an important role in functional languages like Haskell. This section starts with a simple built-in function called maximum, and compares how one would implement it in a traditional procedural programming paradigm to how one would define it recursively in Haskell. The first thing covered is how pattern matching is used to distinguish between base-cases and the recursive steps. This is a sensible application of what was covered in the previous readings regarding pattern matching with functions. The recursive step involves splitting the list into the head and tail, then a 'where' binding to decide how to act on the current input. A simple way to sum up this example is "the max of a list is the max of the first element and the maximum of its tail".
+We then moved onto some more complicated recursive functions, like replicate. This function takes an Int and some elements
+ and returns a list that has several repetitions of the same element (replicate 2 12 -> [12, 12]). We then start on thinking about edge conditions and how to sensibly bound our recursion. This is implemented sensibly by adding the item to be replicated to the front of a list of items yet-to-be-duplicated. When the recusion bottoms out, out list is filled exactly as it should be. After this simple example, we go over implementations of the ever-popular take, reverse, repeat and zip commands, and how they are implemented recursively.
+The end of the chapter is devoted to the quick sort algorithm, type signature
+quicksort :: (Ord a) => [a] -> [a]
+The edge condition for this recursive algorithm is getting an empty list, which is technically sorted. This is a recursive algorithm with 2 recursive calls per level, which results in one call on each the upper and lower half in the algorithm. We use the list combination syntax of haskell to sort the smaller items from the pivot, sort the larger items from the pivot, then combine it all after recursing.
+The end of the chapter is devoted to useful insight on how to think recursively.
+
+Higher Order Functions -
+
+Higher order functions are one of the most beautiful and concise design patterns in my opinion, and functions are higher order by default in Haskell without any messy function-pointer syntax required. 
+The chapter starts with the revelation that spaces between function arguments is actually function application, and only gets weirder from there. We review some examples of this in practice with the `multThree` function, and how a function taking three arguments is actually a repetive application of a function taking a single argument. After a brief overview of infix functions, we move onto a more in-depth review of higher order functions.
+We start with the revelation that functions can take functions as params and returns functions too! (being that this is pretty much the definition of higher-order functions, not surprising). After some discussions about the implications of the previously states fact, we go over maps and filters, great concepts in the grat world of haskell. Maps take a function and list and apply that function the every elements, a filter takes a predicate and a list and returns a list containing only the elements of the input list that satisfy the predicate. 
+We then turn to lambdas, AKA anonymous functions. We start with a simple example and a note telling us to not use lambdas where partial application will work, the latter being more concise and compact. After this we are introduced to folds, both left and right. Folds are kind of some type of syntactic sugar for the very common [head:tail] and edge-case pattern for defining functions. Folds take an accumulator, binary function, and list; and fold the list into the accumulator according to the function. It's a simple addd-on to the language that simplified all sorts of different scenarios. We start with the simpler left folds and move onto right folds, which causes the accumulator to eat values right to left. We then go over 'scan[l|r]', which report the intermediate accumator states in the form of a list. 
+We finish up this chapter by introducing the '$', a function application operator that is right-associative. This, for instance, reduces the number of parenthasis often needed to write a given expression. After a final over-view of function composition, something out of an algebra textbook, the chapter concludes.
