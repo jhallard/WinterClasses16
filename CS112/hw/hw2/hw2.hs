@@ -42,27 +42,32 @@ myFoldl2 op acc xs = foldr (\a b c -> b (op c a)) id xs acc
 isUpper1 :: Char -> Bool
 isUpper1 x = x `elem` ['A'..'Z'] 
 
--- | 7.) Using the standard filter, write a function onlyCapitals1 which returns only 
+-- | 6.) Using the standard filter, write a function onlyCapitals1 which returns only 
 --       the capital letters of the provided string
 onlyCapitals1 :: String -> String
 onlyCapitals1 str = filter (isUpper) str
 
-
--- | 7.)
+-- | 7.) Using list comprehension, write a function which returns only the capital 
+--       letters of the provided string. (Using list comprehension)
 onlyCapitals2 :: String -> String
-onlyCapitals2 str = ""
+onlyCapitals2 str = [x | x <- str, isUpper x]
 
 -- | 8.)
 onlyCapitals3 :: String -> String
-onlyCapitals3 str = ""
+onlyCapitals3 [] = []
+onlyCapitals3 (x:xs) = if (isUpper x) then x:onlyCapitals3 xs else onlyCapitals3 xs
 
--- | 9.)
+-- | 9.) Write a function which returns a tuple with the quotient and the remainder
+--       of an integer division of the provided two numbers
 divRemainder :: Int -> Int -> (Int, Int)
-divRemainder x y = (0,0)
+divRemainder x y = (x `div` y, x `mod` y)
  
--- | 10.)
+-- | 10.) Write a function which returns the sum of the digits of the given integer
 digitSum :: Int -> Int
-digitSum x = 1
+digitSum x = digitSum' x 0 
+            where 
+                  digitSum' 0 acc = acc
+                  digitSum' x acc = digitSum' (fst (divRemainder x 10)) ((snd (divRemainder x 10)) + acc)
  
 -- | 11.)
 --
