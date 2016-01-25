@@ -8,8 +8,6 @@
 
 import Data.Char
 import Data.List
-import Text.Regex
-import Text.Regex.Posix
 
 -- | 1.) Using recursion, write a function myFoldl following the type below that 
 --       behaves like the standard foldl
@@ -55,7 +53,7 @@ onlyCapitals2 str = [x | x <- str, isUpper x]
 -- | 8.)
 onlyCapitals3 :: String -> String
 onlyCapitals3 [] = []
-onlyCapitals3 (x:xs) = if (isUpper x) then x:onlyCapitals3 xs else onlyCapitals3 xs
+onlyCapitals3 (x:xs) = (if (isUpper x) then [x] else []) ++ onlyCapitals3 xs 
 
 -- | 9.) Write a function which returns a tuple with the quotient and the remainder
 --       of an integer division of the provided two numbers
@@ -69,5 +67,7 @@ digitSum x = digitSum' x 0
                   digitSum' 0 acc = acc
                   digitSum' x acc = digitSum' (fst (divRemainder x 10)) ((snd (divRemainder x 10)) + acc)
  
--- | 11.)
---
+-- | 11.) Write a function sayNum which takes a string of digits and spells out the number
+--        as a string in english.
+
+-- Note, this was moved to it's own python file called speak.py.
