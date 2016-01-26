@@ -18,25 +18,22 @@ rest = ["", "thousand", "million", "billion", "trillon",
         "octodecillion", "novemdecillion", "vigintillion"]
 
 def groupothree(group) :
-    teens = ["ten", "eleven" "twelve", "thirteen", "fourteen", 
+    teens = ["ten", "eleven", "twelve", "thirteen", "fourteen", 
             "fifteen", "sixteen", "seventeen", "eighteen", "nineteen"]
     tens = ["ten", "twenty", "thirty", "forty", "fifty", "sixty", "seventy", "eighty", "ninety"]
     ones = ["zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine"]
-    hx = ""
-    tx = ""
-    ox = ""
+    hx = tx = ox = ""
     if(len(group) == 3) :
         hx = "" if int(group[0]) == 0 else (ones[int(group[0])] + " hundred ")
-        tx = "" if int(group[1]) == 0 else (teens[int(group[2])-1] if int(group[1]) == 1 else tens[int(group[1])-1])
-        ox = "" if int(group[2]) == 0 else ones[int(group[2])]
+        tx = "" if int(group[1]) == 0 else (teens[int(group[2])] if int(group[1]) == 1 else tens[int(group[1])-1] + " ")
+        ox = "" if int(group[2]) == 0 or int(group[1]) == 1 else ones[int(group[2])]
     elif(len(group) == 2) :
-        tx = "" if int(group[0]) == 0 else (teens[int(group[1])-1] if int(group[0]) == 1 else tens[int(group[0])-1])
-        ox = "" if int(group[1]) == 0 else ones[int(group[1])]
+        tx = "" if int(group[0]) == 0 else (teens[int(group[1])] if int(group[0]) == 1 else tens[int(group[0])-1] + " ")
+        ox = "" if (int(group[1]) == 0 or int(group[1]) == 1) else ones[int(group[1])]
     elif(len(group) == 1) :
         ox = "" if int(group[0]) == 0 else ones[int(group[0])]
-    else : return ""
 
-    return hx + tx+ " " +ox 
+    return hx+tx+ox 
 
 
 if __name__ == "__main__" :

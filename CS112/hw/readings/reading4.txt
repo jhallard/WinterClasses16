@@ -1,0 +1,61 @@
+John Allard
+CMPS 112
+Reading #4
+
+Chapter 7 - Learn a Haskell
+'Making Our Own Types and Type Classes'
+
+This chapter starts with an introduction to algebraic data types. Algebraic data types are the custom data
+types that we ourselves define in Haskell, and they are made by composing the basic types of Int, Char, Bool, etc. 
+into more complicated structures (the base data types are algebraic, as `data Bool = False | True` shows). The `data`
+keyword is used in Haskell to denote the definition of a new data type. The basic form is as follows
+
+data TypeName = Subtype BaseType1 BaseType2 | Subtype BaseType3 BaseType4 BaseType5
+
+With the simple example given in the text as :
+
+data Shape = Circle Float Float Float | Rectangle Float Float Float Float   
+
+The above says that a shape can be either a circle with 3 Float inputs to the constructor or a rectangle with 4 inputs
+to the constructor, quite simple. Of course, classes can be nested, so we could define a `Point` data-type that holds two floats,
+and define our rectangle and circle as using Points. We can also define functions that work over our data by enumerating
+the constructor values when naming the data-types as parameters, example below :
+
+surface :: Shape -> Float  
+surface (Circle _ r) = pi * r ^ 2  
+surface (Rectangle (Point x1 y1) (Point x2 y2)) = (abs $ x2 - x1) * (abs $ y2 - y1)  
+
+After this we learn some syntactic-sugar for dealing with types with excessive parameters by *naming* them. This simplifies the act
+of passing custom data types around and operating on them in custom functions. The syntax is like
+
+data TypeName = TypeName { att1 :: type1, att2 :: type2, ..., } 
+
+Haskell will automatically create getter-functions out of the names given, allowing us to refer to singular pieces of data
+within our custom types.
+
+Type Parameters
+Type constructors can take types as parameters to produce new types, kind of like templates in C++ (something I'm familiar with).
+We're introduced in more depth to this topic by examing the Maybe type constructor, and how it is used in practice. We're shown
+how to add typeclass constraints to data declarations, but then warned never to do that for good reasons.
+After a look at a 3-vector implementation, we move onto derived instances. We start by showing how easy it is to add the
+following typeclasses to your custom type, "Eq, Ord, Enum, Bounded, Show, Read". We can simply tack on a `deriving (Eq)` if we
+just want element by element comparison for our types. The same can be done with Show and Read. We can also make simple enums with 
+the beautiful syntax given below :
+data Day = Monday | Tuesday | Wednesday | Thursday | Friday | Saturday | Sunday  
+
+We then move onto type synonyms, which is just an easy way to re-name types to give more information to the user. This is a
+short section, after which we move onto the awesome idea of recursive data structures! The architypical example is the list, which
+is either an empty list of a value and a handle to another list! Since trees are just fancy lists, we can also define trees of various
+types in this manner. 
+
+We move onto a deeper discussion of typeclasses, such as how one would go about defining the Eq type class. This is done with
+the class keywork, Eq can be defined as follows
+
+class Eq a where  
+    (==) :: a -> a -> Bool  
+    (/=) :: a -> a -> Bool  
+    x == y = not (x /= y)  
+    x /= y = not (x == y)
+
+We move onto Yes/No type-class examples, and finish off by going over the functor type class, a type class for things that 
+can be mapped over.
