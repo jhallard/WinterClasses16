@@ -43,9 +43,12 @@ instance (Show v) => Show (BST k v) where
 data JSON = JStr String
             | JNum Double
             | JArr [JSON]
-            | JObk [(String, JSON)]
+            | JObj [(String, JSON)]
 
 -- | make JSON an instance of the Show type class. You will have to implement the show function such that the
 --   output looks like normal JSON.
 instance Show JSON where
-show j = ""
+    show (JStr s) = show s
+    show (JNum d) = show d
+    show (JArr a) = "[" ++ intercalate ", " (map show a)  ++ "]"
+    show (JObj lst) = "{" ++ intercalate ", " (map (\x -> show (fst x) ++ ":" ++ show (snd x)) lst) ++ "}"
