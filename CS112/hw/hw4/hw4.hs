@@ -6,8 +6,6 @@
 
 -- | Homework #4 |--
 
-import Data.Char
-import Data.List
 
 -- | 1. The following skeleton code includes the Gen typeclass for any test 
 --      input that can be generated. Anything in the typeclass Random can be 
@@ -24,13 +22,19 @@ class (Show a) => Gen a where
   gen :: IO a
 
 instance (Show a, Random a) => Gen a where
-  gen = randomIO
+  gen = randomIO :: Int
 
 instance (Gen a, Gen b) => Gen (a, b) where
-  gen = -- <-- complete this part -->
+  gen = do
+         a <- randomIO
+         b <- randomIO -- <-- complete this part -->
+         return (a,b)
 
-instance (Gen a) => Gen [a] where
-  gen = -- <-- complete this part -->
+ instance (Gen a) => Gen [a] where
+   gen = do
+         n <- randomIO(1, 10)
+         l <- take n randomIO -- <-- complete this part -->
+         return [n]
 
 
 -- | 2. As a next step, add the Testable typeclass which will be used to test predicates.
@@ -46,14 +50,16 @@ instance Testable Bool where
   test b = return b
 
 instance (Gen a, Testable b) => Testable (a -> b) where
-  test t = -- <-- complete this part -->
+  test t =  do 
+            n <- gen a
+            return test (t n)
 
 
 -- | 3. Finally, implement a quickCheck method. Given a number n and a Testable, it will 
 --      perform up to n tests with random inputs, repeated calling test. Once a failing 
 --      test was encountered, it will print an error and stop testing.
-quickCheck :: (Testable a) => Int -> a -> IO ()
-quickCheck n t = <-- complete this part -->
+-- quickCheck :: (Testable a) => Int -> a -> IO ()
+-- quickCheck n t = <-- complete this part -->
 
 -- | 4. In order to improve the test output, quickCheck should also print a string 
 --      representation of the counterexample.
