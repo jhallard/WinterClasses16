@@ -9,6 +9,7 @@
 
 import Data.Char
 import Data.List
+import Data.Int
 import System.Random
 
 -- | 1. The following skeleton code includes the Gen typeclass for any test 
@@ -17,9 +18,6 @@ import System.Random
 --      Pairs (tuples with two elements) an instance of the Gen type class. 
 --      The generated list should have a random length between 0 (empty) and 10 (inclusive).
 
-
-import System.Random
-import Data.Int
 
 class (Show a) => Gen a where
   gen :: IO a
@@ -46,14 +44,16 @@ instance (Gen a) => Gen [a] where
 --      You have to complete the missing implementation of the test function, which will generate 
 --      a random input and pass it to the function until the resulting boolean value indicates whether 
 --      the test predicate holds or not.
--- class Testable a where
-  -- test :: String -> a -> IO Bool
--- 
--- instance Testable Bool where
-  -- test b = return b
--- 
--- instance (Gen a, Testable b) => Testable (a -> b) where
-  -- test t = -- <-- complete this part -->
+class Testable a where
+  test :: String -> a -> IO Bool
+
+instance Testable Bool where
+  test b = return b
+
+instance (Gen a, Testable b) => Testable (a -> b) where
+  test t =  do 
+            n <- gen a
+            return test (t n)
 
 
 -- | 3. Finally, implement a quickCheck method. Given a number n and a Testable, it will 
