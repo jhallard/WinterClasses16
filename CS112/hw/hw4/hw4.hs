@@ -5,9 +5,11 @@
 -- | I worked alone, no partners to list.
 
 -- | Homework #4 |--
+{-# LANGUAGE FlexibleInstances, OverlappingInstances, UndecidableInstances #-}
 
 import Data.Char
 import Data.List
+import System.Random
 
 -- | 1. The following skeleton code includes the Gen typeclass for any test 
 --      input that can be generated. Anything in the typeclass Random can be 
@@ -15,7 +17,6 @@ import Data.List
 --      Pairs (tuples with two elements) an instance of the Gen type class. 
 --      The generated list should have a random length between 0 (empty) and 10 (inclusive).
 
-{-# LANGUAGE FlexibleInstances, OverlappingInstances, UndecidableInstances #-}
 
 import System.Random
 import Data.Int
@@ -24,13 +25,19 @@ class (Show a) => Gen a where
   gen :: IO a
 
 instance (Show a, Random a) => Gen a where
-  gen = randomIO
+  gen = randomIO 
 
 instance (Gen a, Gen b) => Gen (a, b) where
-  gen = -- <-- complete this part -->
+  gen = do 
+            x <- gen
+            y <- gen
+            return (x, y)
 
 instance (Gen a) => Gen [a] where
-  gen = -- <-- complete this part -->
+   gen = do  
+            rlen <- gen :: IO Int8
+            let len = rlen `mod` 11
+            mapM (\_ -> gen) [1..len]
 
 
 -- | 2. As a next step, add the Testable typeclass which will be used to test predicates.
@@ -39,21 +46,21 @@ instance (Gen a) => Gen [a] where
 --      You have to complete the missing implementation of the test function, which will generate 
 --      a random input and pass it to the function until the resulting boolean value indicates whether 
 --      the test predicate holds or not.
-class Testable a where
-  test :: String -> a -> IO Bool
-
-instance Testable Bool where
-  test b = return b
-
-instance (Gen a, Testable b) => Testable (a -> b) where
-  test t = -- <-- complete this part -->
+-- class Testable a where
+  -- test :: String -> a -> IO Bool
+-- 
+-- instance Testable Bool where
+  -- test b = return b
+-- 
+-- instance (Gen a, Testable b) => Testable (a -> b) where
+  -- test t = -- <-- complete this part -->
 
 
 -- | 3. Finally, implement a quickCheck method. Given a number n and a Testable, it will 
 --      perform up to n tests with random inputs, repeated calling test. Once a failing 
 --      test was encountered, it will print an error and stop testing.
-quickCheck :: (Testable a) => Int -> a -> IO ()
-quickCheck n t = <-- complete this part -->
+-- quickCheck :: (Testable a) => Int -> a -> IO ()
+-- quickCheck n t = <-- complete this part -->
 
 -- | 4. In order to improve the test output, quickCheck should also print a string 
 --      representation of the counterexample.
@@ -78,5 +85,7 @@ qsort (x:xs) = qsort [a | a <- xs, a < x] ++ [x] ++ qsort [a | a <- xs, a > x]
 -- | Write a comprehensive test for sorting algorithms like qsort and isort which describes 
 --   exactly the expected behavior. Using quickCheck with this test should give you a 
 --   counterexample for both qsort and isort.
-testSort :: ([Int8] -> [Int8]) -> [Int8] -> Bool
-testSort sort lst = -- <-- complete this part -->
+-- testSort :: ([Int8] -> [Int8]) -> [Int8] -> Bool
+-- testSort sort lst = -- <-- complete this part -->
+
+-- | 6. Fix the two sorting algorithms above

@@ -1,0 +1,33 @@
+John Allard
+1437547
+Feb 14th 2016
+
+CMPS 112 Reading #6
+
+3 Short Summaries : 1. Functors redux + Applicative Functors, 2. A Fistful of Monads 3. Functors, Applicatives, and Monads in Pictures.
+
+This reading started with two more chapters on Functors, 'Functors Redux' and 'Applicative Functors'. Continuing from our breif introduction to functors a few weeks ago, these chapters demonstrated the use and applicability of functors in a more elucidating and complex fashion than we were first exposed to. We started by going over the common types of functors that we have already seen, like lists, Maybe, Either a, and Tree. These are functors because they fit the functor type class and have an fmap function defined over them with the signature 
+fmap :: (a -> b) -> f a -> f b
+We then discuss what happens if we have a type constructor that we want to make a functor but requires more than one constructor argument, like `Either`? We learned that you have to partially construct the type until it needs only one remaining parameter, so we could turn `Either a` into a functor from `Either a b` -> `Either a c`. We then moved on to looking at the IO monad as a functor. This functor takes a typeclass and an action, performs that action, and constructs a new type class with what is returned from that action. We then get an extremely cool example of how function composition is represented with a functor over ((->) r) a.k.a (r ->). With fmap defined as : `fmap f g = (\x -> f (g x))`, what this does is takes a function from `r->a` and gives back a function from `r->b` using the function from `a->b` we supply, which is just function composition. I thought this was pretty cool. From here we move onto learning about *lifting function*, and how a functor can be seen as one that lifts an (a -> b) to an (f a -> f b). We then moved onto functor laws. 
+1. If we map the id function over a functor, the functor that we get back should be the same as the original. fmap id = id.
+2. Composing two functions and then mapping the resulting function over a functor should be the same as first mapping one function over the functor and then mapping the other one. 
+We then moved onto the Applicative Functors section, which discusses the Applicative typeclass, found in Control.Applicative. We start by learning that "mapping multiparameter functions over functors, we get functors that contain functions inside them. The Applicative typeclass solves the problem of being able to map functions inside functors over other functors by providing two methods, `pure` and `<*>`. Pure takes an item and puts it in the functor, while <*> acts like an fmap that works with values inside of a functor. We learn about useful functions like liftA2 that lift the parameters of a function by applying a functor over them before evaluation of the function, and sequenceA which takes a list of functors and makes it a functor over a list of items.
+(The New Type and Monoid sections can be skipped says assignment handout).
+
+A Fistful of Monads
+This chapter is about monads, aka 'beefed up applicative functors'. Monads solve the following problem, if we have a value with a context, how do we apply it to a function that takes a value without a context but returns a value with a context?
+(>>=) :: (Monad m) => m a -> (a -> m b) -> m b  
+The above lines describes the problem programmtically. The (>>=) function is known as a bind. The simplest example of this is for Maybe, where >>= takes the value in the Maybe, applies the function to it, giving you a Maybe containing the new value. After this we moved onto the Monad type class, defined below.
+class Monad m where  
+    return :: a -> m a  
+    (>>=) :: m a -> (a -> m b) -> m b  
+    (>>) :: m a -> m b -> m b  
+    x >> y = x >>= \_ -> y  
+    fail :: String -> m a  
+    fail msg = error msg  
+
+return is like pure in the applicative functors. The next one is bind which we already discussed. fail is used by Haskell to enable failure in a special syntactic construct for monads. We then went over an example of the Maybe monad using birds and a balancing pole as an example. After this we were shown that the 'do' syntax is valid for chaining any sequence of monadic values together, no just for IO usage. Monads really shine where we're dealing with values that can fail, it handles error propoagation extremely easily and is extremely flexible.
+
+Functors, Applicatives, and Monads in Pictures
+To start, fmap solves the problem of being able to apply a function over a value inside of a special context. We do this buy pulling the value out of the special context, transform it, then put it back in the context just like it never left! Lists are functors, so the same applies to them, pull the values out, transform them, then put them back in. Applicatives are a more general functor where the thing wrapped up is actually a function. Applicative fucntors can unpack both the function and the value, apply the transformation, then give back a new value in the valid, expected context.
+Monads allow us to unpack a special, contextual value, and feed it into a function that takes a non-contextual value and gives back a contextual one. Seems abstract but is actually very very useful.

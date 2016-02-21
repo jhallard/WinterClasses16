@@ -1,0 +1,14 @@
+@relation grades
+@attribute 'gpa' real
+@attribute 'ap' { y, n}
+@attribute 'honor' { h, n }
+@data
+4.0,y,h
+3.7,y,h
+2.5,n,h
+3.8,n,n
+3.3,y,n
+3.0,y,n
+3.0,n,n
+2.7,n,n
+2.2,n,n
