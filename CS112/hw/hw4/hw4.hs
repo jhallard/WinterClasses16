@@ -34,8 +34,10 @@ instance (Gen a, Gen b) => Gen (a, b) where
 instance (Gen a) => Gen [a] where
    gen = do  
             rlen <- gen :: IO Int8
-            let len = rlen `mod` 11
-            mapM (\_ -> gen) [1..len]
+            let len = rlen `mod` 11 -- 0 to 10 baby
+            mapM (\_ -> gen) [1..len] -- you don't want to know how many permutations of 
+                                      -- gen/IO code I went through before I found something
+                                      -- that worked.
 
 
 -- | 2. As a next step, add the Testable typeclass which will be used to test predicates.
@@ -45,16 +47,16 @@ instance (Gen a) => Gen [a] where
 --      a random input and pass it to the function until the resulting boolean value indicates whether 
 --      the test predicate holds or not.
 class Testable a where
-  test :: String -> a -> IO Bool
-
+   test :: a -> IO Bool
+ 
 instance Testable Bool where
-  test b = return b
-
+   test b = return b
+ 
 instance (Gen a, Testable b) => Testable (a -> b) where
-  test t =  do 
-            n <- gen a
-            return test (t n)
-
+   test t =  do 
+             n <- gen
+             test (t n)
+ 
 
 -- | 3. Finally, implement a quickCheck method. Given a number n and a Testable, it will 
 --      perform up to n tests with random inputs, repeated calling test. Once a failing 
