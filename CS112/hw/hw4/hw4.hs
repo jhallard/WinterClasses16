@@ -61,8 +61,9 @@ instance (Gen a, Testable b) => Testable (a -> b) where
 -- | 3. Finally, implement a quickCheck method. Given a number n and a Testable, it will 
 --      perform up to n tests with random inputs, repeated calling test. Once a failing 
 --      test was encountered, it will print an error and stop testing.
--- quickCheck :: (Testable a) => Int -> a -> IO ()
--- quickCheck n t = <-- complete this part -->
+quickCheck :: (Testable a) => Int -> a -> IO ()
+quickCheck 0 b = return b
+quickCheck n t = return not (False `elem` mapM (\_ -> test t) [1..n])
 
 -- | 4. In order to improve the test output, quickCheck should also print a string 
 --      representation of the counterexample.
